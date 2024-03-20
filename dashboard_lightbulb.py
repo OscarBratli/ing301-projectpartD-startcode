@@ -13,7 +13,7 @@ def lightbulb_cmd(state, did):
 
     logging.info(f"Dashboard: {new_state}")
 
-    # TODO START
+    # TODO: START
     # send HTTP request with new actuator state to cloud service
 
 

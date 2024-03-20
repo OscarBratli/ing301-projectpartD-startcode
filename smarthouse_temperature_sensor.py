@@ -31,21 +31,21 @@ class Sensor:
 
         logging.info(f"Sensor Client {self.did} starting")
 
-        # TODO START
+        # TODO: START
         # send temperature to the cloud service with regular intervals
 
         logging.info(f"Client {self.did} finishing")
 
-        # TODO END
+        # TODO: END
 
     def run(self):
 
         pass
-        # TODO START
+        # TODO: START
 
         # create and start thread simulating physical temperature sensor
 
         # create and start thread sending temperature to the cloud service
 
-        # TODO END
+        # TODO: END
 

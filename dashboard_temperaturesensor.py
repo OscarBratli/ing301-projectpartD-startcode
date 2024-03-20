@@ -12,13 +12,13 @@ def refresh_btn_cmd(temp_widget, did):
 
     logging.info("Temperature refresh")
 
-    # TODO START
+    # TODO: START
     # send request to cloud service to obtain current temperature
 
     # replace statement below with measurement from response
     sensor_measurement = SensorMeasurement(init_value="-273.15")
 
-    # TODO END
+    # TODO: END
 
     # update the text field in the user interface
     temp_widget['state'] = 'normal' # to allow text to be changed

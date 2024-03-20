@@ -13,18 +13,26 @@ Start-koden for prosjektet finnes i dette github repository:
 
 https://github.com/selabhvl/ing301-projectpartD-startcode.git
 
-some dere kan bruke som mal (**Use as Template**) tilsvarende tidligere startkode for prosjektene. Startkoden inneholder klasser for devices og sensors samt konstruksjon av smarthus demo eksemplet. 
+some dere kan bruke som mal (**Use as Template**) som dere har gjprt med partA-startkoden.
+Startkoden inneholder egne klasser for actuatorer og sensorer på klientsiden og er dermed _"uavhengig"_ av selve `smarthouse` systemet.  
+Denne kodebasen gjelder altså bare klienten, men det forutsettes at en ferdig utviklet løsning av REST-APIet som beskrevet i 
+del C er utviklet. Dere kan bruker deres egen løsning eller bruke vårt løsningsforslag:
+Når dere sjekker ut dette prosjektet (etter å ha laget repository basert på templaten) kan dere enten legger
+det i en helt ny mapper, eller dere kan også legger det inn i deres eksisterende prosjekt (som [submodul](https://git-scm.com/book/en/v2/Git-Tools-Submodules)) og legger det ved siden av `smarthouse`-mappen, f.eks. i en mappe som heter `client`.
 
-For smarthus skytjenesten (REST API'et) kan dere enten bruke egen løsnings fra Del C eller alternativ bruke løsningsforslaget for Del C av prosjektet som finnes her:
+```bash
+cd <smarthouse prosjekt>
+git clone <part D repository> client
+cd client
+```
 
-https://github.com/selabhvl/ing301-projectpartC-solution.git
 
-Husk at skytjenesten skal kjøre for at de to klient-applikasjoner skal kunne kommunisere.
+Husk at skytjenesten må kjøres i bakgrunnen (lytter på en port for HTTP forbindelser) for at de to klient-applikasjoner skal kunne kommunisere.
 
-Som en forenkling av oppgaven ser vi kun på kontroll av to enheter fra demo smarthuset:
+Som en forenkling av oppgaven skal vi kun fokussere på kontroll av to enheter fra demo smarthuset:
 
-- Sensor: Temperatursensor med device identifikasjon 1
-- Aktuator: Lyspære (LightBulb) med device identifikasjon 8.
+- Sensor: Temperatursensor (f.eks. uuid=`4d8b1d62-7921-4917-9b70-bbd31f6e2e8e`)
+- Aktuator: Lyspære (LightBulb) (f.eks. uuid=`6b1c5f6b-37f6-4e3d-9145-1cfbe2f1fc28`)
 
 Dere skal bruke [requests-biblioteket](https://requests.readthedocs.io/en/latest/) for å implementere bruk av REST API fra klient-applikasjonene.
 
@@ -35,6 +43,34 @@ Start-koden for en dashboard applikasjonen med grensesnitt implementert ved bruk
 Dashboard-applikasjonen startes ved å kjøre Python-scriptet `dashboard.py` og grensesnittet ser ut som vist nedenfor:
 
 <img src="assets/dashboard.png" alt= “” width="300">
+
+### For Mac-brukere:
+
+> [!NOTE]
+> For dere som bruker Mac OS X (og kanskje noen Linux distribusjoner) også vil dere sannsynligvis får en feilmelding som 
+> ```
+> ModuleNotFoundError: No module named '_tkinter'
+> ```
+> Dette er fordi at bibioteket som brukes for disse applikasjoner _TKinter_ ikke er installert standardmessig or Python installasjoner
+> under Mac OS. Du må derfor eksplisitt installere denne. 
+> Den anbefalte måten er å bruke [Hombrew](https://brew.sh/) for dette. Hvis du ikke har Homebrew fra før av så må du installere den først før du kan kjøre:
+> ```
+> brew install python-tk@3.9
+> ```
+> Du leser riktig: Du burde bruke Python 3.9 for denne siden nyere versjoner av Python er litt ustabilit i forhold til Tkinter. 
+> Når Python 3.9 med TKinter er installert lager du en virtual environment:
+> ```bash
+> python3.9 -m venv .venv
+> source .venv/bin/activate
+> python -V # -> burde viser 3.9...
+> ```
+> i det virtuelle miljøet installerer du `requests` og så kan du starte dashbordet:
+> ```bash
+> pip install requests 
+> python dashboard.py
+> ```
+
+## Oppgavebeskrivelse:
 
 Følgende skal implementeres:
 
