@@ -2,10 +2,10 @@
 
 I del D av prosjektet skal dere implementere klient-applikasjoner som bruker REST API for SmartHus sky-tjenesten som dere implementerte i Del C. Konkret skal det implementeres:
 
-- en *dashboard applikasjon* som gjør det mulig å hente målinger fra sensorer og sette tilstanden
-- et *smarthus applikasjon* som simulerer de fysisk sensorer og aktuatorer i smarthuset
+- en *dashboard (klient) applikasjon* som gjør det mulig å hente målinger fra sensorer og sette tilstanden på aktuatorer
+- et *smarthus (klient) applikasjon* som simulerer de fysisk sensorer og aktuatorer i smarthuset og som sender målinger for sensorer og henter tilstand for aktuatorer 
 
-Dashboardet og smarthus applikajsonen skal kommuniserere med hverandre ved å bruke endepunktene i REST API'et.
+Dashboardet og smarthus applikajsonen skal kommuniserere med hverandre ved å bruke endepunktene i REST API'et for sky-tjenesten.
 
 ## Setup og startkode
 
@@ -13,12 +13,13 @@ Start-koden for prosjektet finnes i dette github repository:
 
 https://github.com/selabhvl/ing301-projectpartD-startcode.git
 
-some dere kan bruke som mal (**Use as Template**) som dere har gjprt med partA-startkoden.
-Startkoden inneholder egne klasser for actuatorer og sensorer på klientsiden og er dermed _"uavhengig"_ av selve `smarthouse` systemet.  
-Denne kodebasen gjelder altså bare klienten, men det forutsettes at en ferdig utviklet løsning av REST-APIet som beskrevet i 
+some kan brukes som mal (**Use as Template**) som dere har gjort med startkode tidligere.
+
+Startkoden inneholder egne klasser for aktuatorer og sensorer på klient-siden og er dermed _"uavhengig"_ av selve `smarthouse` systemet.  
+
+Kodebasen for start-koden dekker altså bare klientene, og det forutsettes at en ferdig utviklet løsning av REST-APIet som beskrevet i 
 del C er utviklet. Dere kan bruker deres egen løsning eller bruke vårt løsningsforslag:
-Når dere sjekker ut dette prosjektet (etter å ha laget repository basert på templaten) kan dere enten legger
-det i en helt ny mapper, eller dere kan også legger det inn i deres eksisterende prosjekt (som [submodul](https://git-scm.com/book/en/v2/Git-Tools-Submodules)) og legger det ved siden av `smarthouse`-mappen, f.eks. i en mappe som heter `client`.
+Når dere sjekker ut dette prosjektet (etter å ha laget repository basert på templaten) kan dere enten plasere  det i en helt ny mapper, eller dere kan også legger det inn i deres eksisterende prosjekt (som [submodul](https://git-scm.com/book/en/v2/Git-Tools-Submodules)) og legge det ved siden av `smarthouse`-mappen, f.eks. i en mappe som heter `client`.
 
 ```bash
 cd <smarthouse prosjekt>
@@ -29,7 +30,7 @@ cd client
 
 Husk at skytjenesten må kjøres i bakgrunnen (lytter på en port for HTTP forbindelser) for at de to klient-applikasjoner skal kunne kommunisere.
 
-Som en forenkling av oppgaven skal vi kun fokussere på kontroll av to enheter fra demo smarthuset:
+Som en forenkling av oppgaven skal vi kun fokusere på kontroll av to enheter fra demo smarthuset:
 
 - Sensor: Temperatursensor (f.eks. uuid=`4d8b1d62-7921-4917-9b70-bbd31f6e2e8e`)
 - Aktuator: Lyspære (LightBulb) (f.eks. uuid=`6b1c5f6b-37f6-4e3d-9145-1cfbe2f1fc28`)
@@ -44,20 +45,20 @@ Dashboard-applikasjonen startes ved å kjøre Python-scriptet `dashboard.py` og 
 
 <img src="assets/dashboard.png" alt= “” width="300">
 
-### For Mac-brukere:
+### For Mac-brukere
 
 > [!NOTE]
 > For dere som bruker Mac OS X (og kanskje noen Linux distribusjoner) også vil dere sannsynligvis får en feilmelding som 
 > ```
 > ModuleNotFoundError: No module named '_tkinter'
 > ```
-> Dette er fordi at bibioteket som brukes for disse applikasjoner _TKinter_ ikke er installert standardmessig or Python installasjoner
+> Dette er fordi at bibioteket som brukes for disse applikasjoner _TKinter_ ikke som standard er del av Python installasjoner
 > under Mac OS. Du må derfor eksplisitt installere denne. 
-> Den anbefalte måten er å bruke [Hombrew](https://brew.sh/) for dette. Hvis du ikke har Homebrew fra før av så må du installere den først før du kan kjøre:
+> Den anbefalte måten er å bruke [Homebrew](https://brew.sh/) for dette. Hvis du ikke har Homebrew fra før av så må du installere den først før du kan kjøre:
 > ```
 > brew install python-tk@3.9
 > ```
-> Du leser riktig: Du burde bruke Python 3.9 for denne siden nyere versjoner av Python er litt ustabilit i forhold til Tkinter. 
+> Du leser riktig: Du bør bruke Python 3.9 siden nyere versjoner av Python er litt ustabilit i forhold til Tkinter. 
 > Når Python 3.9 med TKinter er installert lager du en virtual environment:
 > ```bash
 > python3.9 -m venv .venv
@@ -70,13 +71,15 @@ Dashboard-applikasjonen startes ved å kjøre Python-scriptet `dashboard.py` og 
 > python dashboard.py
 > ```
 
-## Oppgavebeskrivelse:
+## Oppgavebeskrivelse
+
+## Dashboard klient-applikasjon
 
 Følgende skal implementeres:
 
-- I filen `dashboard_lightbulb.py` skal dere implementere metoden `refresh_btn_cmd` som kalles når brukeren trykker på `Refresh`-knappen og som skal hente temperaturen fra sky-tjenesten for temperatursensor 1.
+- I filen `dashboard_lightbulb.py` skal dere implementere metoden `refresh_btn_cmd` som kalles når brukeren trykker på `Refresh`-knappen og som skal hente temperaturen fra sky-tjenesten for temperatursensoren.
 
-- I filen `dashboard_temperaturesensor.py` skal dere implementere metoden `lightbulb_cmd` som blir utført når brukeren velger `On` eller `Off` knappene.
+- I filen `dashboard_temperaturesensor.py` skal dere implementere metoden `lightbulb_cmd` som blir utført når brukeren velger `On` eller `Off` knappene som skal skal sette tilstanden på lyspæren via sky-tjenesten.
 
 I filen `messaging.py` finnes klassene `SensorMeasurement` og `ActuatorState` med metoder som kan brukes for å konstruere body/payload i de requests som skal sendes til sky-tjenesten. 
 
@@ -108,23 +111,22 @@ https://superfastpython.com/threading-in-python/#Example_of_Running_a_Function_i
 
 ## Test av systemet
 
-Test systemet ved å kjøre sky-tjenesten sammen med klient-applikasjonen:
+Test systemet ved å kjøre sky-tjenesten sammen med klient-applikasjonene:
 
-- Sjekk at når tilstand for lyspæren endres i dashboard så endrer også tilstanden i smarthuset
-- Sjekk at når temperature ender seg i smarthuset så endres også temperatur i dashboard ved trykk på Refresh-knappen.
+- Sjekk at når tilstand for lyspæren endres i dashboard så endres også tilstanden i smarthuset
+- Sjekk at når temperaturen ender seg i smarthuset så endres også temperatur i dashboard etter trykk på Refresh-knappen.
 
 ## Levering av prosjekt
 
 Følgende skal leveres
 
 - Linke til github repository med implemetasjon av tjenesten
-- Screen-shot som viser dashboard- og smarthusapplikasjonen
+- Screen-shot som viser dashboard- og smarthus-applikasjonen
 
 ## Videre arbeid
 
 Smarthus prosjketet kan utvikles videre i ulike retninger for de som måtte a lyst til dette
 
-- integrere database-løsningen fra Del B inn i det totale systemet
 - Sette opp eks. Arduino/Raspberry Pi enheter for å få faktiske fysiske sensorer og aktuatorer
 - Generalisere dashboard slik det kan lese inn en konfigurasjon av enheter fra sky-tjenesten
 - Utvikle protokoll for registering av nye enheter i smarthuset
