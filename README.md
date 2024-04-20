@@ -77,9 +77,9 @@ Dashboard-applikasjonen startes ved å kjøre Python-scriptet `dashboard.py` og 
 
 Følgende skal implementeres:
 
-- I filen `dashboard_lightbulb.py` skal dere implementere metoden `refresh_btn_cmd` som kalles når brukeren trykker på `Refresh`-knappen og som skal hente temperaturen fra sky-tjenesten for temperatursensoren.
+- I filen `dashboard_lightbulb.py` skal dere implementere metoden `lightbulb_cmd` som blir utført når brukeren velger `On` eller `Off` knappene som skal skal sette tilstanden på lyspæren via sky-tjenesten.
 
-- I filen `dashboard_temperaturesensor.py` skal dere implementere metoden `lightbulb_cmd` som blir utført når brukeren velger `On` eller `Off` knappene som skal skal sette tilstanden på lyspæren via sky-tjenesten.
+- I filen `dashboard_temperaturesensor.py` skal dere implementere metoden `refresh_btn_cmd` som kalles når brukeren trykker på `Refresh`-knappen og som skal hente temperaturen fra sky-tjenesten for temperatursensoren. 
 
 I filen `messaging.py` finnes klassene `SensorMeasurement` og `ActuatorState` med metoder som kan brukes for å konstruere body/payload i de requests som skal sendes til sky-tjenesten. 
 
