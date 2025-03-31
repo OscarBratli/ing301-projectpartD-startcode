@@ -121,7 +121,6 @@ Test systemet ved å kjøre sky-tjenesten sammen med klient-applikasjonene:
 Følgende skal leveres
 
 - Linke til github repository med implemetasjon av tjenesten
-- Screen-shot som viser dashboard- og smarthus-applikasjonen
 
 ## Videre arbeid
 
