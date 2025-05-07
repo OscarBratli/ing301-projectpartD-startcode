@@ -6,18 +6,20 @@ import requests
 from messaging import ActuatorState
 import common
 
-
+BASE_URL = "http://127.0.0.1:8000"   
 def lightbulb_cmd(state, did):
+    active = state.get() == "On"          # → True / False
+    logging.info("Light-bulb %s is %s", did, active)
+    try:
+        r = requests.put(
+            f"{BASE_URL}/smarthouse/device/{did}/set",
+            params={"active": active},     # <-- MUST be a dict!
+            timeout=2,
+        )
+        r.raise_for_status()
+    except requests.RequestException as exc:
+        logging.error("Could not set light-bulb %s – %s", did, exc)
 
-    new_state = state.get()
-
-    logging.info(f"Dashboard: {new_state}")
-
-    # TODO: START
-    # send HTTP request with new actuator state to cloud service
-
-
-    # TODO: END
 
 
 def init_lightbulb(container, did):

@@ -7,45 +7,44 @@ import requests
 from messaging import SensorMeasurement
 import common
 
+import logging, threading, time, math, requests
+                                       
+
+BASE_URL = "http://127.0.0.1:8000"                      # adjust if needed
+
 
 class Sensor:
+    def __init__(self):
+        self._stop = threading.Event()      # lar oss stoppe begge trådene ryddig
 
-    def __init__(self, did):
-        self.did = did
-        self.measurement = SensorMeasurement('0.0')
-
+    # -------------------------------------------------------------
+    #  A.  simulerer selve sensoren (lokalt)
+    # -------------------------------------------------------------
     def simulator(self):
+        while not self._stop.is_set():
+            logging.info("🔧  Simulator: gjør måling …")
+            time.sleep(1)
 
-        logging.info(f"Sensor {self.did} starting")
-
-        while True:
-
-            temp = round(math.sin(time.time() / 10) * common.TEMP_RANGE, 1)
-
-            logging.info(f"Sensor {self.did}: {temp}")
-            self.measurement.set_temperature(str(temp))
-
-            time.sleep(common.TEMPERATURE_SENSOR_SIMULATOR_SLEEP_TIME)
-
+    # -------------------------------------------------------------
+    #  B.  snakker med sky-tjenesten
+    # -------------------------------------------------------------
     def client(self):
+        while not self._stop.is_set():
+            logging.info("🌍  Client: sender / henter data …")
+            time.sleep(3)
 
-        logging.info(f"Sensor Client {self.did} starting")
-
-        # TODO: START
-        # send temperature to the cloud service with regular intervals
-
-        logging.info(f"Client {self.did} finishing")
-
-        # TODO: END
-
+    # -------------------------------------------------------------
+    #  C.  starter begge A og B i hver sin tråd
+    # -------------------------------------------------------------
     def run(self):
+        sim_thread   = threading.Thread(target=self.simulator, daemon=True)
+        http_thread  = threading.Thread(target=self.client,    daemon=True)
 
-        pass
-        # TODO: START
+        sim_thread.start()
+        http_thread.start()
 
-        # create and start thread simulating physical temperature sensor
+        # om dere vil kunne vente på at de blir ferdige en gang:
+        return sim_thread, http_thread
 
-        # create and start thread sending temperature to the cloud service
-
-        # TODO: END
-
+    def stop(self):
+        self._stop.set()                    # signalerer begge løkker om å avslutte
